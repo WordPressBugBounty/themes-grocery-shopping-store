@@ -3,7 +3,7 @@ Contributors: omegathemes
 Requires at least: 5.5
 Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 1.2.8
+Stable tag: 1.2.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,8 +81,149 @@ Source: https://pxhere.com/en/photo/780297
 
 == Changelog ==
 
-= 1.0.0 =
-* Initial release.
+= 1.2.9 =
+* Enhanced Theme Features.
+
+= 1.2.8 = 
+* Version Updated.= 1.2.7 = 
+* Fixed minor error.
+
+= 1.2.6 = 
+* Fixed minor error.
+
+= 1.2.5 =
+* Added css for sidebar.
+* Added blog page css.
+* Updated rtl CSS.
+* Updated pot File. 
+
+= 1.2.4 =
+* Changes Done.
+
+= 1.2.3 =
+* Added Main Menu Color Setting.
+* Added Main Menu Hover Color Setting.
+* Added Submenu Color Setting.
+* Added Submenu Hover Color Setting.
+
+= 1.2.2 =
+* Description Updated.
+
+= 1.2.1 =
+* Resolved Issue.
+
+= 1.2.0 =
+* Bug Fixes.
+
+= 1.1.9 =
+* Added Nothing Found Page Settings.
+* Done Prefixing.
+* Updated POT File.
+
+= 1.1.8 =
+* Minor Changes Done.
+
+= 1.1.7 =
+* Added Enable / Disable Site Logo Setting.
+* Added Enable / Disable Site Title Setting.
+* Updated template-tags.php File Function.
+* Done Checkout Page CSS.
+* Updated Breadcrumb Font Size Setting.
+
+= 1.1.6 =
+* New Tags Added.
+
+= 1.1.5 =
+* Minor Issues Resolved.
+
+= 1.1.4 =
+* Updated Blog Posts Per Column Setting.
+* Added Table CSS.
+* Rearrange Customizer Setting.
+* Prefix Logo Width Setting.
+* Updated Responsive CSS.
+* Updated POT file.
+
+= 1.1.3 =
+* Updated functions.php file.
+* Added Default sidebar.
+* Updated WordPress version.
+* Added Copyright Alignment Setting.
+* Updated Sidebar Layout Settings.
+
+= 1.1.2 =
+* Added Blog Posts Per Column Setting.
+* Added Blog Posts Image Size Setting.
+* Added WooCommerce Related Products Per Page Setting.
+* Added WooCommerce Related Products Per Row Setting.
+
+= 1.1.1 =
+* Added 404 Page Settings.
+* Updated checkout page CSS.
+* Added remove_action in Single Product Template.
+* Added 4 different post formats.
+* Added SVG icons for 4 diffrent post formats.
+
+= 1.1.0 =
+* Relocated Customizer Settings.
+* Fixed Issues.
+* Done Escapping.
+* Done prefixing in breadcrumbs.php.
+* Added Homepage Setup.
+
+= 1.0.9 =
+* Added Sticky Sidebar Setting.
+* Added Default Footer Columns.
+* Updated Responsive CSS.
+* Added Bundle Button In customizer.
+* Added Bundle Info in Omega Options Page.
+
+= 1.0.8 =
+* Added Enable Posts Format Icon.
+* Added Enable Single Posts Image.
+* Updated My account page CSS.
+* Updated sidebar settings.
+* Updated WooCommerce Template.
+
+= 1.0.7 =
+* Updated Customizer CSS & Checkout Page CSS.
+* Updated Breadcrumb Alignment Setting.
+* Updated WordPress Version.
+* Updated Description.
+* Added Single Post Content Alignment Setting.
+* Added Breadcrumb Enable/Disable Setting.
+* Added Sidebar Position Settings.
+* Added Sticky Header Setting.
+
+= 1.0.6 =
+* Added Pagination Enable/Disable Setting.
+* Added Pagination Style Setting.
+* Added Default Image on Blog Posts.
+* Done Prefixing.
+* Updated Second Section for RTL language support.
+
+= 1.0.5 =
+* Added Typography Settings.
+* Added Settings for To The Top.
+* Updated To The Top Function and CSS.
+
+= 1.0.4 =
+* Added POT file.
+* Added Global Color Settings.
+* Did Escaping & Prefixing.
+* Updated Discription.
+* Archive & Single Meta Information Settings.
+* Fixed Enable footer Setting.
+* Added Footer Link.
+
+= 1.0.3 =
+* Updated colors.
+
+= 1.0.2 =
+* Added footer widget title alignment option in customizer.
+* Added show/ hide woocommerce related products option in customizer.
+* Added post page image on off setting in customizer.
+* Added show/ hide footer option in customizer.
 
 = 1.0.1 =
 * Added menu font size setting.
@@ -96,145 +237,6 @@ Source: https://pxhere.com/en/photo/780297
 * Updated notice function.
 * Updated archive product file of woocommerce.
 
-= 1.0.2 =
-* Added footer widget title alignment option in customizer.
-* Added show/ hide woocommerce related products option in customizer.
-* Added post page image on off setting in customizer.
-* Added show/ hide footer option in customizer.
+= 1.0.0 =
+* Initial release.
 
-= 1.0.3 =
-* Updated colors.
-
-= 1.0.4 =
-* Added POT file.
-* Added Global Color Settings.
-* Did Escaping & Prefixing.
-* Updated Discription.
-* Archive & Single Meta Information Settings.
-* Fixed Enable footer Setting.
-* Added Footer Link.
-
-= 1.0.5 =
-* Added Typography Settings.
-* Added Settings for To The Top.
-* Updated To The Top Function and CSS.
-
-= 1.0.6 =
-* Added Pagination Enable/Disable Setting.
-* Added Pagination Style Setting.
-* Added Default Image on Blog Posts.
-* Done Prefixing.
-* Updated Second Section for RTL language support.
-
-= 1.0.7 =
-* Updated Customizer CSS & Checkout Page CSS.
-* Updated Breadcrumb Alignment Setting.
-* Updated WordPress Version.
-* Updated Description.
-* Added Single Post Content Alignment Setting.
-* Added Breadcrumb Enable/Disable Setting.
-* Added Sidebar Position Settings.
-* Added Sticky Header Setting.
-
-= 1.0.8 =
-* Added Enable Posts Format Icon.
-* Added Enable Single Posts Image.
-* Updated My account page CSS.
-* Updated sidebar settings.
-* Updated WooCommerce Template.
-
-= 1.0.9 =
-* Added Sticky Sidebar Setting.
-* Added Default Footer Columns.
-* Updated Responsive CSS.
-* Added Bundle Button In customizer.
-* Added Bundle Info in Omega Options Page.
-
-= 1.1.0 =
-* Relocated Customizer Settings.
-* Fixed Issues.
-* Done Escapping.
-* Done prefixing in breadcrumbs.php.
-* Added Homepage Setup.
-
-= 1.1.1 =
-* Added 404 Page Settings.
-* Updated checkout page CSS.
-* Added remove_action in Single Product Template.
-* Added 4 different post formats.
-* Added SVG icons for 4 diffrent post formats.
-
-= 1.1.2 =
-* Added Blog Posts Per Column Setting.
-* Added Blog Posts Image Size Setting.
-* Added WooCommerce Related Products Per Page Setting.
-* Added WooCommerce Related Products Per Row Setting.
-
-= 1.1.3 =
-* Updated functions.php file.
-* Added Default sidebar.
-* Updated WordPress version.
-* Added Copyright Alignment Setting.
-* Updated Sidebar Layout Settings.
-
-= 1.1.4 =
-* Updated Blog Posts Per Column Setting.
-* Added Table CSS.
-* Rearrange Customizer Setting.
-* Prefix Logo Width Setting.
-* Updated Responsive CSS.
-* Updated POT file.
-
-= 1.1.5 =
-* Minor Issues Resolved.
-
-= 1.1.6 =
-* New Tags Added.
-
-= 1.1.7 =
-* Added Enable / Disable Site Logo Setting.
-* Added Enable / Disable Site Title Setting.
-* Updated template-tags.php File Function.
-* Done Checkout Page CSS.
-* Updated Breadcrumb Font Size Setting.
-
-= 1.1.8 =
-* Minor Changes Done.
-
-= 1.1.9 =
-* Added Nothing Found Page Settings.
-* Done Prefixing.
-* Updated POT File.
-
-= 1.2.0 =
-* Bug Fixes.
-
-= 1.2.1 =
-* Resolved Issue.
-
-= 1.2.2 =
-* Description Updated.
-
-= 1.2.3 =
-* Added Main Menu Color Setting.
-* Added Main Menu Hover Color Setting.
-* Added Submenu Color Setting.
-* Added Submenu Hover Color Setting.
-
-= 1.2.4 =
-* Changes Done.
-
-= 1.2.5 =
-* Added css for sidebar.
-* Added blog page css.
-* Updated rtl CSS.
-* Updated pot File. 
-
-= 1.2.6 = 
-* Fixed minor error.
-
-= 1.2.7 = 
-* Fixed minor error.
-
-= 1.2.8 = 
-* Version Updated.
