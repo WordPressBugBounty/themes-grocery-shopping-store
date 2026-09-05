@@ -64,7 +64,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 		 *
 		 * @since 2.5.0
 		 */
-		const WP_REPO_REGEX = '|^http[s]?://wordpress\.org/(?:extend/)?plugins/|';
+		const WP_REPO_REGEX = '|^http[s]?://WordPress\.org/(?:extend/)?plugins/|';
 
 		/**
 		 * Arbitrary regular expression to test if a string starts with a URL.
