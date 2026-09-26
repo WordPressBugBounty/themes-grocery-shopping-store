@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Grocery Shopping Store 1.2.5\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/grocery-shopping-store\n"
+"Report-Msgid-Bugs-To: https://WordPress.org/support/theme/grocery-shopping-store\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #. Theme URI of the theme
 #: style.css
-msgid "https://www.omegathemes.com/products/free-grocery-wordpress-theme"
+msgid "https://www.omegathemes.com/products/free-grocery-WordPress-theme"
 msgstr ""
 
 #. Description of the theme
@@ -82,15 +82,15 @@ msgid "https://layout.omegathemes.com/steps/pro-grocery-shopping-store/"
 msgstr ""
 
 #: functions.php:82
-msgid "https://www.omegathemes.com/products/grocery-store-wordpress-theme"
+msgid "https://www.omegathemes.com/products/grocery-store-WordPress-theme"
 msgstr ""
 
 #: functions.php:85
-msgid "https://wordpress.org/support/theme/grocery-shopping-store/"
+msgid "https://WordPress.org/support/theme/grocery-shopping-store/"
 msgstr ""
 
 #: functions.php:88
-msgid "https://wordpress.org/support/theme/grocery-shopping-store/reviews/#new-post"
+msgid "https://WordPress.org/support/theme/grocery-shopping-store/reviews/#new-post"
 msgstr ""
 
 #: functions.php:91

@@ -79,13 +79,13 @@ if ( ! function_exists( 'grocery_shopping_store_after_theme_support' ) ) :
 		define('GROCERY_SHOPPING_STORE_DOCS_PRO',__('https://layout.omegathemes.com/steps/pro-grocery-shopping-store/','grocery-shopping-store'));
 		}
 		if (! defined( 'GROCERY_SHOPPING_STORE_BUY_NOW' ) ){
-		define('GROCERY_SHOPPING_STORE_BUY_NOW',__('https://www.omegathemes.com/products/grocery-store-wordpress-theme','grocery-shopping-store'));
+		define('GROCERY_SHOPPING_STORE_BUY_NOW',__('https://www.omegathemes.com/products/grocery-store-WordPress-theme','grocery-shopping-store'));
 		}
 		if (! defined( 'GROCERY_SHOPPING_STORE_SUPPORT_FREE' ) ){
-		define('GROCERY_SHOPPING_STORE_SUPPORT_FREE',__('https://wordpress.org/support/theme/grocery-shopping-store/','grocery-shopping-store'));
+		define('GROCERY_SHOPPING_STORE_SUPPORT_FREE',__('https://WordPress.org/support/theme/grocery-shopping-store/','grocery-shopping-store'));
 		}
 		if (! defined( 'GROCERY_SHOPPING_STORE_REVIEW_FREE' ) ){
-		define('GROCERY_SHOPPING_STORE_REVIEW_FREE',__('https://wordpress.org/support/theme/grocery-shopping-store/reviews/#new-post','grocery-shopping-store'));
+		define('GROCERY_SHOPPING_STORE_REVIEW_FREE',__('https://WordPress.org/support/theme/grocery-shopping-store/reviews/#new-post','grocery-shopping-store'));
 		}
 		if (! defined( 'GROCERY_SHOPPING_STORE_DEMO_PRO' ) ){
 		define('GROCERY_SHOPPING_STORE_DEMO_PRO',__('https://layout.omegathemes.com/grocery-shopping-store/','grocery-shopping-store'));

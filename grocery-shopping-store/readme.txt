@@ -3,7 +3,7 @@ Contributors: omegathemes
 Requires at least: 5.5
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,14 +52,14 @@ License: MIT License(https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LI
 == Code from Twenty Nineteen ==
 Copyright (c) 2018-2019 WordPress.org
 License: GPLv2
-Source: https://wordpress.org/themes/twentyninteen/
+Source: https://WordPress.org/themes/twentyninteen/
 Included as part of the following classes and functions:
 - Grocery_Shopping_Store_SVG_Icons
 
 == Code from Multi Blog ==
 Copyright (c) 2020-2021 WordPress.org
 License: GPLv2
-Source: https://wordpress.org/themes/multi-blog/
+Source: https://WordPress.org/themes/multi-blog/
 Included as part of the following customizer code and functions
 
 == Image Used ==
@@ -80,6 +80,9 @@ License URL: https://pxhere.com/en/license
 Source: https://pxhere.com/en/photo/780297
 
 == Changelog ==
+
+= 1.3.3 =
+* Enhanced Mobile Layout.
 
 = 1.3.2 =
 * Updated Core Components.

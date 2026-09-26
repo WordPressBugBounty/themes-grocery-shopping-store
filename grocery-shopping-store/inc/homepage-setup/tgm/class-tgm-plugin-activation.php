@@ -1350,7 +1350,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 		 * allowed, so as not to break upgrade paths from non-standard bundled plugins using uppercase
 		 * characters in the plugin directory path/slug. Silly them.
 		 *
-		 * @see https://developer.wordpress.org/reference/hooks/sanitize_key/
+		 * @see https://developer.WordPress.org/reference/hooks/sanitize_key/
 		 *
 		 * @since 2.5.0
 		 *
@@ -3196,8 +3196,8 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
 					 * comments are added. Code style has been made to comply.}}
 					 *
 					 * @see Plugin_Upgrader::bulk_upgrade()
-					 * @see https://core.trac.wordpress.org/browser/tags/4.2.1/src/wp-admin/includes/class-wp-upgrader.php#L838
-					 * (@internal Last synced: Dec 31st 2015 against https://core.trac.wordpress.org/browser/trunk?rev=36134}}
+					 * @see https://core.trac.WordPress.org/browser/tags/4.2.1/src/wp-admin/includes/class-wp-upgrader.php#L838
+					 * (@internal Last synced: Dec 31st 2015 against https://core.trac.WordPress.org/browser/trunk?rev=36134}}
 					 *
 					 * @param array $plugins The plugin sources needed for installation.
 					 * @param array $args    Arbitrary passed extra arguments.
@@ -3413,7 +3413,7 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
 				 *            TGMPA_Bulk_Installer_Skin.
 				 *            This was done to prevent backward compatibility issues with v2.3.6.}}
 				 *
-				 * @see https://core.trac.wordpress.org/browser/trunk/src/wp-admin/includes/class-wp-upgrader-skins.php
+				 * @see https://core.trac.WordPress.org/browser/trunk/src/wp-admin/includes/class-wp-upgrader-skins.php
 				 *
 				 * @package TGM-Plugin-Activation
 				 * @author  Thomas Griffin

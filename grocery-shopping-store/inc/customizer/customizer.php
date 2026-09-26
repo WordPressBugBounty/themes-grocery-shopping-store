@@ -132,7 +132,7 @@ function grocery_shopping_store_customize_register( $wp_customize ) {
 			array(
 				'title'    => esc_html__( 'Grocery Store Pro', 'grocery-shopping-store' ),
 				'pro_text' => esc_html__( 'Upgrade To Pro', 'grocery-shopping-store' ),
-				'pro_url'  => esc_url('https://www.omegathemes.com/products/grocery-store-wordpress-theme'),
+				'pro_url'  => esc_url('https://www.omegathemes.com/products/grocery-store-WordPress-theme'),
 				'priority'  => 1,
 			)
 		)
