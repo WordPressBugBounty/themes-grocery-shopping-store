@@ -295,7 +295,7 @@ class Grocery_Shopping_Store_Whizzie {
 								<p><?php echo wp_kses_post( 'Get <span>25% OFF</span> on Premium Grocery Store WordPress Theme Use code <span>"NYTHEMES25"</span> at checkout.' ); ?></p>
 							</div>
 							<div class="homepage-setup-theme-buynow-four">
-								<a target="_blank" href="<?php echo esc_url( GROCERY_SHOPPING_STORE_BUY_NOW ); ?>"><?php echo esc_html__( 'Upgrade To Pro With Just $40', 'grocery-shopping-store' ); ?></a>
+								<a target="_blank" href="<?php echo esc_url( GROCERY_SHOPPING_STORE_BUY_NOW ); ?>"><?php echo esc_html__( 'Upgrade To Pro With Just $39', 'grocery-shopping-store' ); ?></a>
 							</div>
 						</div>
 					</div> <!-- .demo_image -->

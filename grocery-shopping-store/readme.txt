@@ -1,9 +1,9 @@
 == Grocery Shopping Store ==
 Contributors: omegathemes
 Requires at least: 5.5
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.2
-Stable tag: 1.3.3
+Stable tag: 1.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,16 +50,16 @@ Source: https://github.com/OwlCarousel2
 License: MIT License(https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE)
 
 == Code from Twenty Nineteen ==
-Copyright (c) 2018-2019 WordPress.org
+Copyright (c) 2018-2019 wordpress.org
 License: GPLv2
-Source: https://WordPress.org/themes/twentyninteen/
+Source: https://wordpress.org/themes/twentyninteen/
 Included as part of the following classes and functions:
 - Grocery_Shopping_Store_SVG_Icons
 
 == Code from Multi Blog ==
-Copyright (c) 2020-2021 WordPress.org
+Copyright (c) 2020-2021 wordpress.org
 License: GPLv2
-Source: https://WordPress.org/themes/multi-blog/
+Source: https://wordpress.org/themes/multi-blog/
 Included as part of the following customizer code and functions
 
 == Image Used ==
@@ -80,6 +80,14 @@ License URL: https://pxhere.com/en/license
 Source: https://pxhere.com/en/photo/780297
 
 == Changelog ==
+
+= 1.3.5 =
+* Updated pricing.
+* Updated Woocommerce CSS.
+* Resolved theme check errors.
+
+= 1.3.4 =
+* Compatibility and Security Updates.
 
 = 1.3.3 =
 * Enhanced Mobile Layout.
