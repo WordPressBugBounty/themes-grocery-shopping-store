@@ -82,10 +82,10 @@ if ( ! function_exists( 'grocery_shopping_store_after_theme_support' ) ) :
 		define('GROCERY_SHOPPING_STORE_BUY_NOW',__('https://www.omegathemes.com/products/grocery-store-wordpress-theme','grocery-shopping-store'));
 		}
 		if (! defined( 'GROCERY_SHOPPING_STORE_SUPPORT_FREE' ) ){
-		define('GROCERY_SHOPPING_STORE_SUPPORT_FREE',__('https://wordpress.org/support/theme/grocery-shopping-store/','grocery-shopping-store'));
+		define('GROCERY_SHOPPING_STORE_SUPPORT_FREE',__('https://WordPress.org/support/theme/grocery-shopping-store/','grocery-shopping-store'));
 		}
 		if (! defined( 'GROCERY_SHOPPING_STORE_REVIEW_FREE' ) ){
-		define('GROCERY_SHOPPING_STORE_REVIEW_FREE',__('https://wordpress.org/support/theme/grocery-shopping-store/reviews/#new-post','grocery-shopping-store'));
+		define('GROCERY_SHOPPING_STORE_REVIEW_FREE',__('https://WordPress.org/support/theme/grocery-shopping-store/reviews/#new-post','grocery-shopping-store'));
 		}
 		if (! defined( 'GROCERY_SHOPPING_STORE_DEMO_PRO' ) ){
 		define('GROCERY_SHOPPING_STORE_DEMO_PRO',__('https://layout.omegathemes.com/grocery-shopping-store/','grocery-shopping-store'));
@@ -95,6 +95,9 @@ if ( ! function_exists( 'grocery_shopping_store_after_theme_support' ) ) :
 		}
 		if (! defined( 'GROCERY_SHOPPING_STORE_BUNDLE_BUTTON' ) ){
 			define('GROCERY_SHOPPING_STORE_BUNDLE_BUTTON',__('https://www.omegathemes.com/products/wp-theme-bundle','grocery-shopping-store'));
+		}
+		if (! defined( 'GROCERY_SHOPPING_STORE_HIRE_EXPERT' ) ){
+			define('GROCERY_SHOPPING_STORE_HIRE_EXPERT',__('https://www.omegathemes.com/pages/contact','grocery-shopping-store'));
 		}
 
 	}
@@ -265,52 +268,130 @@ add_filter( 'woocommerce_enable_setup_wizard', '__return_false' );
 
 // NOTICE FUNCTION
 
-function grocery_shopping_store_admin_notice() { 
-    global $pagenow;
-    $theme_args = wp_get_theme();
-    $meta = get_option( 'grocery_shopping_store_admin_notice' );
-    $name = $theme_args->get( 'Name' );
-    $current_screen = get_current_screen();
-
-    if ( ! $meta ) {
-        if ( is_network_admin() ) {
-            return;
-        }
-
-        if ( ! current_user_can( 'manage_options' ) ) {
-            return;
-        }
-
-        if ( $current_screen->base != 'appearance_page_groceryshoppingstore-wizard' ) {
-            ?>
-            <div class="notice notice-success notice-content">
-                <h2><?php esc_html_e('Welcome! Thank you for choosing Grocery Shopping Store. Let’s Set Up Your Website!', 'grocery-shopping-store') ?> </h2>
-                <p><?php esc_html_e('Before you dive into customization, let’s go through a quick setup process to ensure everything runs smoothly. Click below to start setting up your website in minutes!', 'grocery-shopping-store') ?> </p>
-                <div class="info-link">
-                    <a href="<?php echo esc_url( admin_url( 'themes.php?page=groceryshoppingstore-wizard' ) ); ?>"><?php esc_html_e('Get Started with Grocery Shopping Store', 'grocery-shopping-store'); ?></a>
-                </div>
-                <p class="dismiss-link"><strong><a href="?grocery_shopping_store_admin_notice=1"><?php esc_html_e( 'Dismiss', 'grocery-shopping-store' ); ?></a></strong></p>
-            </div>
-            <?php
-        }
+/**
+ * Whether the welcome notice should be shown on the current admin screen.
+ */
+function grocery_shopping_store_show_admin_notice() {
+    if ( get_option( 'grocery_shopping_store_admin_notice' ) || is_network_admin() || ! current_user_can( 'manage_options' ) ) {
+        return false;
     }
+
+    $grocery_shopping_store_current_screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+    if ( $grocery_shopping_store_current_screen && 'appearance_page_groceryshoppingstore-wizard' === $grocery_shopping_store_current_screen->base ) {
+        return false;
+    }
+
+    // Once every setup step is done the notice only stays on the Dashboard.
+    if ( grocery_shopping_store_setup_is_complete() ) {
+        return $grocery_shopping_store_current_screen && 'dashboard' === $grocery_shopping_store_current_screen->base;
+    }
+
+    return true;
+}
+
+/**
+ * Whether every Getting Started step is done.
+ */
+function grocery_shopping_store_setup_is_complete() {
+    return function_exists( 'grocery_shopping_store_get_setup_progress' ) && ! in_array( false, grocery_shopping_store_get_setup_progress(), true );
+}
+
+function grocery_shopping_store_admin_notice() {
+    if ( ! grocery_shopping_store_show_admin_notice() ) {
+        return;
+    }
+
+    $grocery_shopping_store_theme_args = wp_get_theme();
+    $grocery_shopping_store_name = $grocery_shopping_store_theme_args->get( 'Name' );
+    $grocery_shopping_store_progress = function_exists( 'grocery_shopping_store_get_setup_progress' ) ? grocery_shopping_store_get_setup_progress() : array();
+    $grocery_shopping_store_done = count( array_filter( $grocery_shopping_store_progress ) );
+    $grocery_shopping_store_total = max( 1, count( $grocery_shopping_store_progress ) );
+    $grocery_shopping_store_complete = grocery_shopping_store_setup_is_complete();
+    $grocery_shopping_store_dismiss_url = wp_nonce_url( add_query_arg( 'grocery_shopping_store_admin_notice', '1' ), 'grocery_shopping_store_dismiss_notice' );
+    ?>
+    <div class="notice omg-notice<?php echo $grocery_shopping_store_complete ? ' omg-notice--complete' : ''; ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'grocery_shopping_store_dismiss_notice' ) ); ?>">
+        <div class="omg-notice__media">
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/screenshot.png' ); ?>" alt="<?php echo esc_attr( $grocery_shopping_store_name ); ?>">
+        </div>
+        <div class="omg-notice__body">
+            <p class="omg-notice__eyebrow">
+                <?php
+                if ( $grocery_shopping_store_complete ) {
+                    /* translators: %s: theme name */
+                    printf( esc_html__( '%s setup complete', 'grocery-shopping-store' ), esc_html( $grocery_shopping_store_name ) );
+                } else {
+                    /* translators: %s: theme name */
+                    printf( esc_html__( 'Thanks for choosing %s', 'grocery-shopping-store' ), esc_html( $grocery_shopping_store_name ) );
+                }
+                ?>
+            </p>
+            <?php if ( $grocery_shopping_store_complete ) : ?>
+                <h2 class="omg-notice__title"><?php esc_html_e( 'Your store is ready', 'grocery-shopping-store' ); ?></h2>
+                <p class="omg-notice__text"><?php esc_html_e( 'Every setup step is done. Add your products, fine-tune the design in the Customizer, or unlock more layouts with Pro.', 'grocery-shopping-store' ); ?></p>
+            <?php else : ?>
+                <h2 class="omg-notice__title"><?php esc_html_e( 'Let’s set up your store in a few minutes', 'grocery-shopping-store' ); ?></h2>
+                <p class="omg-notice__text"><?php esc_html_e( 'Install the recommended plugins, import the demo and make it yours, all from one Getting Started page.', 'grocery-shopping-store' ); ?></p>
+            <?php endif; ?>
+            <div class="omg-notice__progress">
+                <span class="omg-progress"><span class="omg-progress__bar" style="width: <?php echo esc_attr( max( 3, round( $grocery_shopping_store_done / $grocery_shopping_store_total * 100 ) ) ); ?>%"></span></span>
+                <span class="omg-notice__count">
+                    <?php
+                    /* translators: 1: steps done, 2: total steps */
+                    printf( esc_html__( '%1$s of %2$s steps done', 'grocery-shopping-store' ), esc_html( $grocery_shopping_store_done ), esc_html( $grocery_shopping_store_total ) );
+                    ?>
+                </span>
+            </div>
+            <div class="omg-notice__actions">
+                <?php if ( $grocery_shopping_store_complete ) : ?>
+                    <a class="omg-btn omg-btn--primary" href="<?php echo esc_url( admin_url( 'themes.php?page=groceryshoppingstore-wizard' ) ); ?>"><?php esc_html_e( 'Getting Started', 'grocery-shopping-store' ); ?></a>
+                    <a class="omg-btn omg-btn--outline" href="<?php echo esc_url( home_url( '/' ) ); ?>" target="_blank"><?php esc_html_e( 'View your site', 'grocery-shopping-store' ); ?></a>
+                    <a class="omg-btn omg-btn--outline" href="<?php echo esc_url( admin_url( 'customize.php' ) ); ?>"><?php esc_html_e( 'Customize', 'grocery-shopping-store' ); ?></a>
+                <?php else : ?>
+                    <a class="omg-btn omg-btn--primary" href="<?php echo esc_url( admin_url( 'themes.php?page=groceryshoppingstore-wizard&omg-focus=1' ) ); ?>"><?php echo $grocery_shopping_store_done ? esc_html__( 'Continue setup', 'grocery-shopping-store' ) : esc_html__( 'Get started', 'grocery-shopping-store' ); ?></a>
+                <?php endif; ?>
+                <a class="omg-btn omg-btn--premium" href="<?php echo esc_url( GROCERY_SHOPPING_STORE_BUY_NOW ); ?>" target="_blank"><?php esc_html_e( 'Go To Premium', 'grocery-shopping-store' ); ?></a>
+                <a class="omg-btn omg-btn--outline-pink" href="<?php echo esc_url( GROCERY_SHOPPING_STORE_BUNDLE_BUTTON ); ?>" target="_blank"><?php esc_html_e( 'Get all WP themes for $69', 'grocery-shopping-store' ); ?></a>
+            </div>
+        </div>
+        <a class="omg-notice__close" href="<?php echo esc_url( $grocery_shopping_store_dismiss_url ); ?>" aria-label="<?php esc_attr_e( 'Dismiss this notice', 'grocery-shopping-store' ); ?>">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </a>
+    </div>
+    <?php
 }
 add_action( 'admin_notices', 'grocery_shopping_store_admin_notice' );
 
 if ( ! function_exists( 'grocery_shopping_store_update_admin_notice' ) ) :
 /**
- * Updating admin notice on dismiss
+ * Updating admin notice on dismiss (link fallback when JS is off)
  */
 function grocery_shopping_store_update_admin_notice() {
-    if ( isset( $_GET['grocery_shopping_store_admin_notice'] ) && $_GET['grocery_shopping_store_admin_notice'] == '1' ) {
+    if ( isset( $_GET['grocery_shopping_store_admin_notice'] ) && '1' === $_GET['grocery_shopping_store_admin_notice'] && current_user_can( 'manage_options' ) ) {
+        check_admin_referer( 'grocery_shopping_store_dismiss_notice' );
         update_option( 'grocery_shopping_store_admin_notice', true );
+        wp_safe_redirect( remove_query_arg( array( 'grocery_shopping_store_admin_notice', '_wpnonce' ) ) );
+        exit;
     }
 }
 endif;
 add_action( 'admin_init', 'grocery_shopping_store_update_admin_notice' );
+
+/**
+ * Dismiss the welcome notice over AJAX
+ */
+function grocery_shopping_store_dismiss_admin_notice() {
+    check_ajax_referer( 'grocery_shopping_store_dismiss_notice', 'nonce' );
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_send_json_error();
+    }
+    update_option( 'grocery_shopping_store_admin_notice', true );
+    wp_send_json_success();
+}
+add_action( 'wp_ajax_grocery_shopping_store_dismiss_notice', 'grocery_shopping_store_dismiss_admin_notice' );
 
 // After Switch theme function
 add_action( 'after_switch_theme', 'grocery_shopping_store_getstart_setup_options' );
 function grocery_shopping_store_getstart_setup_options() {
     update_option( 'grocery_shopping_store_admin_notice', false );
 }
+

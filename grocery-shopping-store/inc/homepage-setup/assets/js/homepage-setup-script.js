@@ -1,354 +1,394 @@
-var Grocery_Shopping_Store_Whizzie = (function($){
-    var t;
-	var current_step = '';
-	var step_pointer = '';
+/**
+ * Getting Started page: setup steps, plugin installer, demo import,
+ * coupon copy buttons and the welcome notice dismiss.
+ */
+( function ( $ ) {
+	'use strict';
 
-    // callbacks from form button clicks.
-    var callbacks = {
-		grocery_shopping_store_do_next_step: function( btn ) {
-			grocery_shopping_store_do_next_step( btn );
-		},
-        install_plugins: function(btn){
-            var plugins = new grocery_shopping_store_PluginManager();
-            plugins.init( btn );
-        },
-		grocery_shopping_store_install_widgets: function( btn ) {
-			var widgets = new grocery_shopping_store_WidgetManager();
-			widgets.init( btn );
-		},
-        grocery_shopping_store_install_content: function(btn){
-            var content = new grocery_shopping_store_ContentManager();
-            content.init( btn );
-        }
-    };
+	var params = window.grocery_shopping_store_setup || {};
+	var i18n = params.i18n || {};
 
-    function grocery_shopping_store_window_loaded() {
-		var maxHeight = 0;
-		
-		$( '.whizzie-menu li.step' ).each( function( index ) {
-			$(this).attr( 'data-height', $(this).innerHeight() );
-			if( $(this).innerHeight() > maxHeight ) {
-				maxHeight = $(this).innerHeight();
+	var Setup = {
+
+		init: function () {
+			this.$root = $( '#omg-setup' );
+			if ( ! this.$root.length ) {
+				return;
 			}
-		});
-		
-		$( '.whizzie-menu li .detail' ).each( function( index ) {
-			$(this).attr( 'data-height', $(this).innerHeight() );
-			$(this).addClass( 'scale-down' );
-		});
-		
+			this.total = parseInt( this.$root.data( 'total' ), 10 ) || this.$root.find( '.omg-step' ).length;
 
-		$( '.whizzie-menu li.step' ).css( 'height', '100%' );
-		$( '.whizzie-menu li.step:first-child' ).addClass( 'active-step' );
-		$( '.whizzie-nav li:first-child' ).addClass( 'active-step' );
-		
-		$( '.whizzie-wrap' ).addClass( 'loaded' );
-		
-        // init button clicks:
-        $('.do-it').on( 'click', function(e) {
-			e.preventDefault();
-			step_pointer = $(this).data('step');
-			current_step = $('.step-' + $(this).data('step'));
-			$('.whizzie-wrap').addClass( 'spinning' );
-            if($(this).data('callback') && typeof callbacks[$(this).data('callback')] != 'undefined'){
-                // we have to process a callback before continue with form submission
-                callbacks[$(this).data('callback')](this);
-                return false;
-            } else {
-                grocery_shopping_store_loading_content();
-                return true;
-            }
-        });
-        $('.button-upload').on( 'click', function(e) {
-            e.preventDefault();
-            renderMediaUploader();
-        });
-        $('.theme-presets a').on( 'click', function(e) {
-            e.preventDefault();
-            var $ul = $(this).parents('ul').first();
-            $ul.find('.current').removeClass('current');
-            var $li = $(this).parents('li').first();
-            $li.addClass('current');
-            var newcolor = $(this).data('style');
-            $('#new_style').val(newcolor);
-            return false;
-        });
-    }
+			this.$root.on( 'click', '.omg-step__head', this.onToggle.bind( this ) );
+			this.$root.on( 'click', '[data-omg-complete]', this.onComplete.bind( this ) );
+			this.$root.on( 'change', '.omg-plugin__check', this.updatePluginCount.bind( this ) );
+			this.$root.on( 'click', '.omg-install-plugins', this.installPlugins.bind( this ) );
+			this.$root.on( 'click', '.omg-import-demo', this.importDemo.bind( this ) );
 
-    function grocery_shopping_store_loading_content(){}
-	
-    function grocery_shopping_store_do_next_step( btn ) {
-		current_step.removeClass( 'active-step' );
-		$( '.nav-step-' + step_pointer ).removeClass( 'active-step' );
-		current_step.addClass( 'done-step' );
-		$( '.nav-step-' + step_pointer ).addClass( 'done-step' );
-		current_step.fadeOut( 500, function() {
-			current_step = current_step.next();
-			step_pointer = current_step.data( 'step' );
-			current_step.fadeIn();
-			current_step.addClass( 'active-step' );
-			$( '.nav-step-' + step_pointer ).addClass( 'active-step' );
-			$('.whizzie-wrap').removeClass( 'spinning' );
-		});
-    }
+			this.updatePluginCount();
+		},
 
-    function grocery_shopping_store_PluginManager(){
+		// Accordion: only one step open at a time.
+		openStep: function ( $step ) {
+			this.$root.find( '.omg-step.is-open' ).not( $step ).removeClass( 'is-open' )
+				.find( '.omg-step__head' ).attr( 'aria-expanded', 'false' );
+			$step.addClass( 'is-open' ).find( '.omg-step__head' ).attr( 'aria-expanded', 'true' );
+		},
 
-        var complete;
-        var items_completed = 0;
-        var current_item = '';
-        var $current_node;
-        var current_item_hash = '';
-		
-        function ajax_callback(response){
-            if(typeof response == 'object' && typeof response.message != 'undefined'){
-                $current_node.find('span').text(response.message);
-                if(typeof response.url != 'undefined'){
-                    // we have an ajax url action to perform.
+		closeStep: function ( $step ) {
+			$step.removeClass( 'is-open' ).find( '.omg-step__head' ).attr( 'aria-expanded', 'false' );
+		},
 
-                    if(response.hash == current_item_hash){
-                        $current_node.find('span').text("failed");
-                        grocery_shopping_store_find_next();
-                    }else {
-                        current_item_hash = response.hash;
-                        jQuery.post(response.url, response, function(response2) {
-                            grocery_shopping_store_process_current();
-                            $current_node.find('span').text(response.message + whizzie_params.verify_text);
-                        }).fail(ajax_callback);
-                    }
+		onToggle: function ( e ) {
+			var $step = $( e.currentTarget ).closest( '.omg-step' );
+			if ( $step.hasClass( 'is-open' ) ) {
+				this.closeStep( $step );
+			} else {
+				this.openStep( $step );
+			}
+		},
 
-                }else if(typeof response.done != 'undefined'){
-                    // finished processing this plugin, move onto next
-                    grocery_shopping_store_find_next();
-                }else{
-                    // error processing this plugin
-                    grocery_shopping_store_find_next();
-                }
-            }else{
-                // error - try again with next plugin
-                $current_node.find('span').text("ajax error");
-                grocery_shopping_store_find_next();
-            }
-        }
-        function grocery_shopping_store_process_current() {
-            if(current_item){
-                // query our ajax handler to get the ajax to send to TGM
-                // if we don't get a reply we can assume everything worked and continue onto the next one.
-                jQuery.post(whizzie_params.ajaxurl, {
-                    action: 'setup_plugins',
-                    wpnonce: whizzie_params.wpnonce,
-                    slug: current_item
-                }, ajax_callback).fail(ajax_callback);
-            }
-        }
-        function grocery_shopping_store_find_next(){
-            var do_next = false;
-            if($current_node){
-                if(!$current_node.data('done_item')){
-                    items_completed++;
-                    $current_node.data('done_item',1);
-                }
-                $current_node.find('.spinner').css('visibility','hidden');
-            }
-            var $li = $('.whizzie-do-plugins li');
-            $li.each(function(){
-                if(current_item == '' || do_next){
-                    current_item = $(this).data('slug');
-                    $current_node = $(this);
-                    grocery_shopping_store_process_current();
-                    do_next = false;
-                }else if($(this).data('slug') == current_item){
-                    do_next = true;
-                }
-            });
-            if(items_completed >= $li.length){
-                // finished all plugins!
-                complete();
-            }
-        }
-        
-        return {
-            init: function(btn){
-                $('.envato-wizard-plugins').addClass('installing');
-                complete = function(){
-                    grocery_shopping_store_do_next_step();
-                };
-                grocery_shopping_store_find_next();
-            }
-        }
-    }
-	
-	function grocery_shopping_store_WidgetManager() {
-		function grocery_shopping_store_import_widgets(){
-            jQuery.post(
-				whizzie_params.ajaxurl,
-				{
-					action: 'grocery_shopping_store_setup_widgets',
-					wpnonce: whizzie_params.wpnonce
-				},
-				complete
-			);
-		}
-		return {
-			init: function( btn ) {
-				complete = function() {
-					grocery_shopping_store_do_next_step();
+		onComplete: function ( e ) {
+			var $el = $( e.currentTarget );
+			// Links (e.g. "View your site") keep opening normally.
+			if ( ! $el.is( 'a' ) ) {
+				e.preventDefault();
+			}
+			this.completeStep( $el.data( 'omg-complete' ), true );
+		},
+
+		/**
+		 * Mark a step done, then move on to the next unfinished one.
+		 *
+		 * @param {string}  id   Step id.
+		 * @param {boolean} save Store it on the server (imports save themselves).
+		 */
+		completeStep: function ( id, save ) {
+			var self = this;
+			var $step = this.$root.find( '.omg-step[data-step="' + id + '"]' );
+
+			if ( save ) {
+				$.post( params.ajaxurl, { action: 'grocery_shopping_store_setup_step', wpnonce: params.wpnonce, step: id } );
+			}
+
+			$step.addClass( 'is-done' );
+			this.updateProgress();
+			$( document ).trigger( 'omg:step-complete', [ id ] );
+
+			window.setTimeout( function () {
+				var $next = $step.nextAll( '.omg-step:not(.is-done)' ).first();
+				if ( ! $next.length ) {
+					$next = self.$root.find( '.omg-step:not(.is-done)' ).first();
 				}
-				grocery_shopping_store_import_widgets();
+				if ( $next.length ) {
+					self.openStep( $next );
+				} else {
+					self.closeStep( $step );
+				}
+			}, 450 );
+		},
+
+		updateProgress: function () {
+			var done = this.$root.find( '.omg-step.is-done' ).length;
+			var pct = Math.max( 3, Math.round( done / this.total * 100 ) );
+
+			this.$root.find( '.omg-setup__done' ).text( done );
+			this.$root.find( '.omg-progress' ).attr( 'aria-valuenow', done );
+			this.$root.find( '.omg-progress__bar' ).css( 'width', pct + '%' );
+			this.$root.toggleClass( 'is-complete', done >= this.total );
+		},
+
+		showError: function ( $step, message ) {
+			$step.find( '.omg-step__error' ).text( message ).prop( 'hidden', ! message );
+		},
+
+		setBusy: function ( $btn, busy, label ) {
+			$btn.toggleClass( 'is-busy', busy ).prop( 'disabled', busy );
+			if ( label ) {
+				$btn.find( '.omg-btn__label' ).text( label );
+			}
+		},
+
+		/* Plugins
+		--------------------------------------------- */
+
+		pendingPlugins: function () {
+			return this.$root.find( '.omg-plugin:not(.is-ready)' ).filter( function () {
+				return $( this ).find( '.omg-plugin__check' ).is( ':checked' );
+			} );
+		},
+
+		updatePluginCount: function () {
+			var count = this.pendingPlugins().length;
+			var $btn = this.$root.find( '.omg-install-plugins' );
+			$btn.find( '.omg-btn__count' ).text( '(' + count + ')' );
+			if ( ! $btn.hasClass( 'is-busy' ) ) {
+				$btn.prop( 'disabled', ! count );
+			}
+		},
+
+		setPluginStatus: function ( $item, state, text ) {
+			$item.find( '.omg-plugin__status' )
+				.attr( 'class', 'omg-plugin__status omg-plugin__status--' + state )
+				.text( text );
+		},
+
+		/**
+		 * Install / update / activate one plugin through TGMPA.
+		 * Our ajax handler returns the next TGMPA action until the plugin is active.
+		 */
+		installPlugin: function ( $item ) {
+			var self = this;
+			var deferred = $.Deferred();
+			var lastHash = '';
+
+			function fail() {
+				$item.removeClass( 'is-working' );
+				self.setPluginStatus( $item, 'failed', i18n.failed );
+				deferred.reject();
+			}
+
+			function request() {
+				$.post( params.ajaxurl, {
+					action: 'setup_plugins',
+					wpnonce: params.wpnonce,
+					slug: $item.data( 'slug' )
+				} ).done( handle ).fail( fail );
+			}
+
+			function handle( response ) {
+				if ( ! response || 'object' !== typeof response ) {
+					return fail();
+				}
+				if ( response.done ) {
+					$item.removeClass( 'is-working' ).addClass( 'is-ready' );
+					$item.find( '.omg-plugin__check' ).prop( 'disabled', true );
+					self.setPluginStatus( $item, 'active', i18n.active );
+					return deferred.resolve();
+				}
+				// Same action twice in a row means TGMPA could not finish it.
+				if ( ! response.url || response.hash === lastHash ) {
+					return fail();
+				}
+				lastHash = response.hash;
+				self.setPluginStatus( $item, 'working', response.message || i18n.installing );
+				$.post( response.url, response ).always( request );
+			}
+
+			$item.addClass( 'is-working' );
+			this.setPluginStatus( $item, 'working', i18n.installing );
+			request();
+
+			return deferred.promise();
+		},
+
+		installPlugins: function ( e ) {
+			var self = this;
+			var $btn = $( e.currentTarget );
+			var $step = $btn.closest( '.omg-step' );
+			var queue = this.pendingPlugins().toArray();
+			var failed = 0;
+
+			if ( ! queue.length ) {
+				return;
+			}
+
+			this.showError( $step, '' );
+			this.setBusy( $btn, true, i18n.installing );
+			$step.find( '.omg-plugin__check, .omg-skip' ).prop( 'disabled', true );
+
+			// One plugin at a time, TGMPA does not like parallel requests.
+			( function next() {
+				var item = queue.shift();
+				if ( item ) {
+					self.installPlugin( $( item ) ).fail( function () {
+						failed++;
+					} ).always( next );
+					return;
+				}
+
+				$step.find( '.omg-skip' ).prop( 'disabled', false );
+				$step.find( '.omg-plugin:not(.is-ready) .omg-plugin__check' ).each( function () {
+					// Required plugins stay locked.
+					var required = $( this ).closest( '.omg-plugin' ).find( '.omg-plugin__status--required' ).length;
+					$( this ).prop( 'disabled', !! required );
+				} );
+
+				if ( failed ) {
+					self.setBusy( $btn, false, i18n.install );
+					self.updatePluginCount();
+					self.showError( $step, i18n.pluginsErr );
+				} else {
+					self.setBusy( $btn, false, i18n.installed );
+					$btn.prop( 'disabled', true ).find( '.omg-btn__count' ).text( '' );
+					self.completeStep( 'plugins', true );
+				}
+			}() );
+		},
+
+		/* Demo import
+		--------------------------------------------- */
+
+		importDemo: function ( e ) {
+			var self = this;
+			var $btn = $( e.currentTarget );
+			var $step = $btn.closest( '.omg-step' );
+			var label = $btn.find( '.omg-btn__label' ).text();
+			// Elementor themes queue the Easy Demo Import for Omega Themes requests instead of the theme's own import.
+			var queue = ( params.importSteps || [ { action: 'grocery_shopping_store_setup_widgets', wpnonce: params.wpnonce } ] ).slice();
+
+			function fail( message ) {
+				self.setBusy( $btn, false, label );
+				self.showError( $step, message || i18n.importErr );
+			}
+
+			this.showError( $step, '' );
+			this.setBusy( $btn, true, i18n.importing );
+
+			( function next() {
+				var data = queue.shift();
+				if ( ! data ) {
+					self.setBusy( $btn, false, i18n.imported );
+					$btn.prop( 'disabled', true );
+					// The theme's own import saves the step itself.
+					self.completeStep( 'demo', false === params.importSaves );
+					return;
+				}
+				// Read as text: PHP notices from the import should not count as a failure.
+				$.ajax( {
+					url: params.ajaxurl,
+					type: 'POST',
+					dataType: 'text',
+					data: data
+				} ).done( function ( text ) {
+					var response = parseJson( text );
+					if ( response && false === response.success ) {
+						return fail( 'string' === typeof response.data ? response.data : '' );
+					}
+					next();
+				} ).fail( function () {
+					fail( '' );
+				} );
+			}() );
+		}
+	};
+
+	/**
+	 * Parse a JSON reply that may have PHP notices printed before it.
+	 *
+	 * @param {string} text Raw response.
+	 * @return {Object|null}
+	 */
+	function parseJson( text ) {
+		try {
+			return JSON.parse( text );
+		} catch ( err ) {
+			try {
+				return JSON.parse( String( text ).replace( /^[\s\S]*?(\{[\s\S]*\})\s*$/, '$1' ) );
+			} catch ( err2 ) {
+				return null;
 			}
 		}
 	}
 
-    function grocery_shopping_store_ContentManager(){
+	/* Focus mode: only the setup card is usable until the demo is imported
+	--------------------------------------------- */
 
-        var complete;
-        var items_completed = 0;
-        var current_item = '';
-        var $current_node;
-        var current_item_hash = '';
+	var Focus = {
 
-        function ajax_callback(response) {
-            if(typeof response == 'object' && typeof response.message != 'undefined'){
-                $current_node.find('span').text(response.message);
-                if(typeof response.url != 'undefined'){
-                    // we have an ajax url action to perform.
-                    if(response.hash == current_item_hash){
-                        $current_node.find('span').text("failed");
-                        grocery_shopping_store_find_next();
-                    }else {
-                        current_item_hash = response.hash;
-                        jQuery.post(response.url, response, ajax_callback).fail(ajax_callback); // recuurrssionnnnn
-                    }
-                }else if(typeof response.done != 'undefined'){
-                    // finished processing this plugin, move onto next
-                    grocery_shopping_store_find_next();
-                }else{
-                    // error processing this plugin
-                    grocery_shopping_store_find_next();
-                }
-            }else{
-                // error - try again with next plugin
-                $current_node.find('span').text("ajax error");
-                grocery_shopping_store_find_next();
-            }
-        }
+		init: function () {
+			this.$wrap = $( '.omg-wrap.is-focus' );
+			if ( ! this.$wrap.length ) {
+				return;
+			}
+			this.$tip = this.$wrap.find( '.omg-focus-tip' );
+			// Keep keyboard users inside the setup card too.
+			this.$blurred = this.$wrap.children().not( '.omg-layout' ).add( this.$wrap.find( '.omg-main' ) );
+			this.$blurred.attr( 'inert', '' );
 
-        function grocery_shopping_store_process_current(){
-            if(current_item){
+			this.$tip.on( 'click', '.omg-focus-ok', this.hideTip.bind( this ) );
+			this.$tip.on( 'click', '.omg-focus-exit', this.exit.bind( this ) );
+			$( document ).on( 'omg:step-complete', function ( e, id ) {
+				if ( 'demo' === id ) {
+					Focus.exit();
+				}
+			} );
 
-                var $check = $current_node.find('input:checkbox');
-                if($check.is(':checked')) {
-                    // process htis one!
-                    jQuery.post(whizzie_params.ajaxurl, {
-                        action: 'envato_setup_content',
-                        wpnonce: whizzie_params.wpnonce,
-                        content: current_item
-                    }, ajax_callback).fail(ajax_callback);
-                }else{
-                    $current_node.find('span').text("Skipping");
-                    setTimeout(grocery_shopping_store_find_next,300);
-                }
-            }
-        }
-        
+			$( '#omg-setup' )[0].scrollIntoView( { block: 'nearest' } );
+		},
 
-        return {
-            init: function(btn){
-                $('.envato-setup-pages').addClass('installing');
-                $('.envato-setup-pages').find('input').prop("disabled", true);
-                complete = function(){
-                    grocery_shopping_store_loading_content();
-                    window.location.href=btn.href;
-                };
-                grocery_shopping_store_find_next();
-            }
-        }
-    }
+		hideTip: function () {
+			var $tip = this.$tip;
+			$tip.addClass( 'is-leaving' );
+			window.setTimeout( function () {
+				$tip.remove();
+			}, 350 );
+		},
 
-    /**
-     * Callback function for the 'click' event of the 'Set Footer Image'
-     * anchor in its meta box.
-     *
-     * Displays the media uploader for selecting an image.
-     *
-     * @since 0.1.0
-     */
-    function renderMediaUploader() {
-        'use strict';
+		exit: function () {
+			if ( ! this.$wrap.hasClass( 'is-focus' ) ) {
+				return;
+			}
+			this.hideTip();
+			this.$wrap.removeClass( 'is-focus' );
+			this.$blurred.removeAttr( 'inert' );
 
-        var file_frame, attachment;
+			// Reloading the page should not bring the blur back.
+			if ( window.history.replaceState ) {
+				window.history.replaceState( null, '', window.location.href.replace( /([?&])omg-focus=1(&|$)/, function ( m, p1, p2 ) {
+					return p2 ? p1 : '';
+				} ) );
+			}
+		}
+	};
 
-        if ( undefined !== file_frame ) {
-            file_frame.open();
-            return;
-        }
+	/* Coupon copy buttons
+	--------------------------------------------- */
 
-        file_frame = wp.media.frames.file_frame = wp.media({
-            title: 'Upload Logo',//jQuery( this ).data( 'uploader_title' ),
-            button: {
-                text: 'Select Logo' //jQuery( this ).data( 'uploader_button_text' )
-            },
-            multiple: false  // Set to true to allow multiple files to be selected
-        });
+	function copyText( text ) {
+		if ( navigator.clipboard && window.isSecureContext ) {
+			return navigator.clipboard.writeText( text );
+		}
+		var $tmp = $( '<textarea readonly>' ).val( text ).css( { position: 'fixed', opacity: 0 } ).appendTo( 'body' );
+		$tmp[0].select();
+		try {
+			document.execCommand( 'copy' );
+		} catch ( err ) {}
+		$tmp.remove();
+		return $.Deferred().resolve().promise();
+	}
 
-        // When an image is selected, run a callback.
-        file_frame.on( 'select', function() {
-            // We set multiple to false so only get one image from the uploader
-            attachment = file_frame.state().get('selection').first().toJSON();
+	$( document ).on( 'click', '[data-omg-copy]', function () {
+		var $btn = $( this );
+		var original = $btn.data( 'omg-label' ) || $btn.text();
+		$btn.data( 'omg-label', original );
 
-            jQuery('.site-logo').attr('src',attachment.url);
-            jQuery('#new_logo_id').val(attachment.id);
-            // Do something with attachment.id and/or attachment.url here
-        });
-        // Now display the actual file_frame
-        file_frame.open();
+		copyText( String( $btn.data( 'omg-copy' ) ) ).then( function () {
+			$btn.addClass( 'is-copied' ).text( i18n.copied );
+			window.clearTimeout( $btn.data( 'omg-timer' ) );
+			$btn.data( 'omg-timer', window.setTimeout( function () {
+				$btn.removeClass( 'is-copied' ).text( original );
+			}, 1800 ) );
+		} );
+	} );
 
-    }
+	/* Welcome notice
+	--------------------------------------------- */
 
-    return {
-        init: function(){
-			t = this;
-			$(grocery_shopping_store_window_loaded);
-        },
-        callback: function(func){
-            console.log(func);
-            console.log(this);
-        }
-    }
+	$( document ).on( 'click', '.omg-notice__close', function ( e ) {
+		var $notice = $( this ).closest( '.omg-notice' );
+		e.preventDefault();
 
-})(jQuery);
+		$.post( params.ajaxurl, { action: 'grocery_shopping_store_dismiss_notice', nonce: $notice.data( 'nonce' ) } );
+		$notice.addClass( 'is-leaving' );
+		window.setTimeout( function () {
+			$notice.slideUp( 200, function () {
+				$notice.remove();
+			} );
+		}, 250 );
+	} );
 
-Grocery_Shopping_Store_Whizzie.init();
+	$( function () {
+		Setup.init();
+		Focus.init();
+	} );
 
-jQuery(document).ready(function(){
-
-    jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-menu').attr("checked","checked");
-
-    jQuery('#grocery-shopping-store-setup-menu').click(function(){
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-menu').css("display","block");
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-contact').css("display","none");
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-widget').css("display","none");
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-social-icon').css("display","none");
-    });
-
-    jQuery('#grocery-shopping-store-setup-contact').click(function(){
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-menu').css("display","none");
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-contact').css("display","block");
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-widget').css("display","none");
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-social-icon').css("display","none");
-    });
-
-    jQuery('#grocery-shopping-store-setup-widget').click(function(){
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-menu').css("display","none");
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-contact').css("display","none");
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-widget').css("display","block");
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-social-icon').css("display","none");
-    });
-
-    jQuery('#grocery-shopping-store-setup-social').click(function(){
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-menu').css("display","none");
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-contact').css("display","none");
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-widget').css("display","none");
-        jQuery('#grocery-shopping-store-demo-setup-guid .grocery-shopping-store-setup-social-icon').css("display","block");
-    });
-});
+}( jQuery ) );

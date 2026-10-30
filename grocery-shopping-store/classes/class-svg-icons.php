@@ -98,8 +98,8 @@ if (!class_exists('Grocery_Shopping_Store_SVG_Icons')) :
                 'twitch.tv',
             ),
             'wp' => array(
-                'wordpress.com',
-                'wordpress.org',
+                'WordPress.com',
+                'WordPress.org',
             ),
         );
 

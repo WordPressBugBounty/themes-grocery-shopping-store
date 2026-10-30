@@ -20,28 +20,30 @@ $grocery_shopping_store_theme_title = $grocery_shopping_store_current_theme->get
  **/
 
 // Change the title and slug of your wizard page
-$config['grocery_shopping_store_page_slug'] 	= 'grocery-shopping-store';
-$config['grocery_shopping_store_page_title']	= 'Homepage Setup';
+$grocery_shopping_store_config['grocery_shopping_store_page_slug'] 	= 'grocery-shopping-store';
+$grocery_shopping_store_config['grocery_shopping_store_page_title']	= __( 'Getting Started', 'grocery-shopping-store' );
 
-$config['steps'] = array(
+// Only 'title' and 'desc' can be changed here
+$grocery_shopping_store_config['steps'] = array(
 	'plugins' => array(
-		'id'			=> 'plugins',
-		'title'			=> __( 'Install and Activate Essential Plugins', 'grocery-shopping-store' ),
-		'icon'			=> 'admin-plugins',
-		'button_text'	=> __( 'Install Plugins', 'grocery-shopping-store' ),
-		'can_skip'		=> true
+		'id'	=> 'plugins',
+		'title'	=> __( 'Install essential plugins', 'grocery-shopping-store' ),
+		'desc'	=> __( 'Recommended for demo layouts and shop pages', 'grocery-shopping-store' ),
 	),
-	'widgets' => array(
-		'id'			=> 'widgets',
-		'title'			=> __( 'Setup Home Page', 'grocery-shopping-store' ),
-		'icon'			=> 'welcome-widgets-menus',
-		'button_text'	=> __( 'Start Home Page Setup', 'grocery-shopping-store' ),
-		'can_skip'		=> true
+	'demo' => array(
+		'id'	=> 'demo',
+		'title'	=> __( 'Import demo content', 'grocery-shopping-store' ),
+		'desc'	=> __( 'Pages, products, menus and widgets', 'grocery-shopping-store' ),
 	),
-	'done' => array(
-		'id'			=> 'done',
-		'title'			=> __( 'Customize Your Site', 'grocery-shopping-store' ),
-		'icon'			=> 'yes',
+	'customize' => array(
+		'id'	=> 'customize',
+		'title'	=> __( 'Make it yours', 'grocery-shopping-store' ),
+		'desc'	=> __( 'Logo, colors, header and homepage', 'grocery-shopping-store' ),
+	),
+	'launch' => array(
+		'id'	=> 'launch',
+		'title'	=> __( 'Launch your store', 'grocery-shopping-store' ),
+		'desc'	=> __( 'Preview and go live', 'grocery-shopping-store' ),
 	)
 );
 
@@ -49,5 +51,5 @@ $config['steps'] = array(
  * This kicks off the wizard
  **/
 if( class_exists( 'Grocery_Shopping_Store_Whizzie' ) ) {
-	$Grocery_Shopping_Store_Whizzie = new Grocery_Shopping_Store_Whizzie( $config );
+	$Grocery_Shopping_Store_Whizzie = new Grocery_Shopping_Store_Whizzie( $grocery_shopping_store_config );
 }

@@ -8,7 +8,7 @@
  * or theme author for support.
  *
  * @package   TGM-Plugin-Activation
- * @version   2.6.1 for parent theme Grocery Shopping Store for publication on wordpress.org
+ * @version   2.6.1 for parent theme Grocery Shopping Store for publication on WordPress.org
  * @link      http://tgmpluginactivation.com/
  * @author    Thomas Griffin, Gary Jones, Juliette Reinders Folmer
  * @copyright Copyright (c) 2011, Thomas Griffin
@@ -223,7 +223,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 		public $strings = array();
 
 		/**
-		 * Holds the version of wordpress.
+		 * Holds the version of WordPress.
 		 *
 		 * @since 2.4.0
 		 *
@@ -298,7 +298,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 		}
 
 		/**
-		 * Initialise the interactions between this class and wordpress.
+		 * Initialise the interactions between this class and WordPress.
 		 *
 		 * Hooks in three new methods for the class: admin_menu, notices and styles.
 		 *
@@ -1350,7 +1350,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 		 * allowed, so as not to break upgrade paths from non-standard bundled plugins using uppercase
 		 * characters in the plugin directory path/slug. Silly them.
 		 *
-		 * @see https://developer.wordpress.org/reference/hooks/sanitize_key/
+		 * @see https://developer.WordPress.org/reference/hooks/sanitize_key/
 		 *
 		 * @since 2.5.0
 		 *
@@ -3196,8 +3196,8 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
 					 * comments are added. Code style has been made to comply.}}
 					 *
 					 * @see Plugin_Upgrader::bulk_upgrade()
-					 * @see https://core.trac.wordpress.org/browser/tags/4.2.1/src/wp-admin/includes/class-wp-upgrader.php#L838
-					 * (@internal Last synced: Dec 31st 2015 against https://core.trac.wordpress.org/browser/trunk?rev=36134}}
+					 * @see https://core.trac.WordPress.org/browser/tags/4.2.1/src/wp-admin/includes/class-wp-upgrader.php#L838
+					 * (@internal Last synced: Dec 31st 2015 against https://core.trac.WordPress.org/browser/trunk?rev=36134}}
 					 *
 					 * @param array $plugins The plugin sources needed for installation.
 					 * @param array $args    Arbitrary passed extra arguments.
@@ -3413,7 +3413,7 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
 				 *            TGMPA_Bulk_Installer_Skin.
 				 *            This was done to prevent backward compatibility issues with v2.3.6.}}
 				 *
-				 * @see https://core.trac.wordpress.org/browser/trunk/src/wp-admin/includes/class-wp-upgrader-skins.php
+				 * @see https://core.trac.WordPress.org/browser/trunk/src/wp-admin/includes/class-wp-upgrader-skins.php
 				 *
 				 * @package TGM-Plugin-Activation
 				 * @author  Thomas Griffin
@@ -3506,7 +3506,8 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
 								// Automatic activation strings.
 								$this->upgrader->strings['skin_upgrade_start'] = __( 'The installation and activation process is starting. This process may take a while on some hosts, so please be patient.', 'grocery-shopping-store' );
 								/* translators: 1: plugin name. */
-								$this->upgrader->strings['skin_update_successful'] = __( '%1$s installed and activated successfully.', 'grocery-shopping-store' ) . ' <a href="#" class="hide-if-no-js" onclick="%2$s"><span>' . esc_html__( 'Show Details', 'grocery-shopping-store' ) . '</span><span class="hidden">' . esc_html__( 'Hide Details', 'grocery-shopping-store' ) . '</span>.</a>';
+								// Core passes only the title to this string and prints its own "More details" toggle.
+								$this->upgrader->strings['skin_update_successful'] = __( '%1$s installed and activated successfully.', 'grocery-shopping-store' );
 								$this->upgrader->strings['skin_upgrade_end']       = __( 'All installations and activations have been completed.', 'grocery-shopping-store' );
 								/* translators: 1: plugin name, 2: action number 3: total number of actions. */
 								$this->upgrader->strings['skin_before_update_header'] = __( 'Installing and Activating Plugin %1$s (%2$d/%3$d)', 'grocery-shopping-store' );
@@ -3514,7 +3515,8 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
 								// Default installation strings.
 								$this->upgrader->strings['skin_upgrade_start'] = __( 'The installation process is starting. This process may take a while on some hosts, so please be patient.', 'grocery-shopping-store' );
 								/* translators: 1: plugin name. */
-								$this->upgrader->strings['skin_update_successful'] = esc_html__( '%1$s installed successfully.', 'grocery-shopping-store' ) . ' <a href="#" class="hide-if-no-js" onclick="%2$s"><span>' . esc_html__( 'Show Details', 'grocery-shopping-store' ) . '</span><span class="hidden">' . esc_html__( 'Hide Details', 'grocery-shopping-store' ) . '</span>.</a>';
+								// Core passes only the title to this string and prints its own "More details" toggle.
+								$this->upgrader->strings['skin_update_successful'] = esc_html__( '%1$s installed successfully.', 'grocery-shopping-store' );
 								$this->upgrader->strings['skin_upgrade_end']       = __( 'All installations have been completed.', 'grocery-shopping-store' );
 								/* translators: 1: plugin name, 2: action number 3: total number of actions. */
 								$this->upgrader->strings['skin_before_update_header'] = __( 'Installing Plugin %1$s (%2$d/%3$d)', 'grocery-shopping-store' );

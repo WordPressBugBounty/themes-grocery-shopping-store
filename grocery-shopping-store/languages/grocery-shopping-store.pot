@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Grocery Shopping Store 1.2.5\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/grocery-shopping-store\n"
+"Report-Msgid-Bugs-To: https://WordPress.org/support/theme/grocery-shopping-store\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -86,11 +86,11 @@ msgid "https://www.omegathemes.com/products/grocery-store-wordpress-theme"
 msgstr ""
 
 #: functions.php:85
-msgid "https://wordpress.org/support/theme/grocery-shopping-store/"
+msgid "https://WordPress.org/support/theme/grocery-shopping-store/"
 msgstr ""
 
 #: functions.php:88
-msgid "https://wordpress.org/support/theme/grocery-shopping-store/reviews/#new-post"
+msgid "https://WordPress.org/support/theme/grocery-shopping-store/reviews/#new-post"
 msgstr ""
 
 #: functions.php:91
@@ -187,7 +187,7 @@ msgid "WordPress"
 msgstr ""
 
 #: inc/custom-functions.php:378
-msgid "wordpress."
+msgid "WordPress."
 msgstr ""
 
 #: inc/custom-functions.php:388

@@ -42,6 +42,9 @@ function grocery_shopping_store_category_add_form_fields_callback() {
 add_action( 'category_add_form_fields', 'grocery_shopping_store_category_add_form_fields_callback' );
 
 function grocery_shopping_store_custom_create_term_callback($term_id) {
+    if ( ! isset( $_REQUEST['category_custom_image_url'] ) ) {
+        return;
+    }
     // add term meta data
     add_term_meta(
         $term_id,
